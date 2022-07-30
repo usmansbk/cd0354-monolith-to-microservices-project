@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: backend-user
+
+  labels:
+    app: backend-user
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-user
+  template:
+    metadata:
+      labels:
+        app: backend-user
+    spec:
+      containers:
+        - name: backend-user
+          image: usmansbk/udagram-api-user:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_USERNAME
+                  optional: false
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_PASSWORD
+                  optional: false
+
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: POSTGRES_DB
+                  optional: false
+
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: POSTGRES_HOST
+                  optional: false
+
+            - name: AWS_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_BUCKET
+                  optional: false
+
+            - name: AWS_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_PROFILE
+                  optional: false
+
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_REGION
+                  optional: false
+
+            - name: JWT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: JWT_SECRET
+                  optional: false
+
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: URL
+                  optional: false
+
+          volumeMounts:
+            - name: aws-credentials
+              mountPath: "$HOME/.aws"
+              readOnly: true
+      volumes:
+        - name: aws-credentials
+          secret:
+            secretName: aws-secret
+            optional: false
