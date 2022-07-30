@@ -9,12 +9,12 @@ script:
   - docker-compose -f docker-compose-build.yaml build
   - docker tag udagram-api-feed usmansbk/udagram-api-feed:v1
   - docker tag udagram-api-user usmansbk/udagram-api-user:v1
-  - docker tag udagram-frontend usmansbk/udagram-frontend:v2
+  - docker tag udagram-frontend usmansbk/udagram-frontend:v3
   - docker tag reverseproxy usmansbk/reverseproxy:v1
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push usmansbk/udagram-api-feed:v1
   - docker push usmansbk/udagram-api-user:v1
-  - docker push usmansbk/udagram-frontend:v2
+  - docker push usmansbk/udagram-frontend:v3
   - docker push usmansbk/reverseproxy:v1
