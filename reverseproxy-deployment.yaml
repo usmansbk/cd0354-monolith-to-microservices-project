@@ -23,6 +23,6 @@ spec:
     spec:
       containers:
         - name: reverseproxy
-          image: usmansbk/udagram-reverseproxy:v1
+          image: usmansbk/reverseproxy:v1
           ports:
             - containerPort: 8080
